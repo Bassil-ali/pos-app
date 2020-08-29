@@ -1,0 +1,29 @@
+composer require mcamara/laravel-localization
+
+ 'localize'                => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
+        'localizationRedirect'    => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
+        'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
+        'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
+        'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class
+php artisan vendor:publish --provider="Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider"
+
+
+
+composer require "santigarcor/laratrust:5.0.*"
+
+php artisan vendor:publish --tag="laratrust"
+
+php artisan config:clear
+
+php artisan laratrust:setup
+
+php artisan config:clear
+
+composer dump-autoload
+
+php artisan migrate
+
+php artisan laratrust:seeder
+composer dump-autoload
+
+$this->call(LaratrustSeeder::class);
