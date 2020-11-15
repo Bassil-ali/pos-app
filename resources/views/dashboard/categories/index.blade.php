@@ -2,15 +2,15 @@
 
 @section('content')
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="overflow-y: scroll;">
 
         <section class="content-header">
 
-            <h1>@lang('site.categories')</h1>
+            <h1>الايرادات</h1>
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.categories')</li>
+                <li class="active">الايرادات</li>
             </ol>
         </section>
 
@@ -26,13 +26,13 @@
 
                         <div class="row">
 
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
                             </div>
 
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
-                                @if (auth()->user()->hasPermission('create_categories'))
+                                @if (auth()->user()->id ==1 || auth()->user()->admin ==1)
                                     <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
                                 @else
                                     <a href="#" class="btn btn-primary disabled"><i class="fa fa-plus"></i> @lang('site.add')</a>
@@ -46,29 +46,31 @@
 
                 <div class="box-body">
 
+                    <div class="box-body table-responsive">
                     @if ($categories->count() > 0)
 
-                        <table class="table table-hover">
+                        <table class="table table-hover" >
 
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>@lang('site.name')</th>
-                                <th>@lang('site.products_count')</th>
-                                <th>@lang('site.related_products')</th>
-                                <th>@lang('site.action')</th>
+                                <th scope="col">#</th>
+                                <th scope="col">اسم الايرادات</th>
+                                <th scope="col">قيمه الايرادات</th>
+
+
                             </tr>
                             </thead>
-                            
+
                             <tbody>
                             @foreach ($categories as $index=>$category)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $category->name }}</td>
-                                    <td>{{ $category->products->count() }}</td>
-                                    <td><a href="{{ route('dashboard.products.index', ['category_id' => $category->id]) }}" class="btn btn-info btn-sm">@lang('site.related_products')</a></td>
+                                    <th scope="row">{{ $index + 1 }}</th>
+                                    <td>{{ $category->nameA }}</td>
+                                    <td>{{ $category->nameV }}</td>
+
+
                                     <td>
-                                        @if (auth()->user()->hasPermission('update_categories'))
+                                        @if (auth()->user()->id ==1 || auth()->user()->admin ==1)
                                             <a href="{{ route('dashboard.categories.edit', $category->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
                                         @else
                                             <a href="#" class="btn btn-info btn-sm disabled"><i class="fa fa-edit"></i> @lang('site.edit')</a>
@@ -84,18 +86,18 @@
                                         @endif
                                     </td>
                                 </tr>
-                            
+
                             @endforeach
                             </tbody>
 
                         </table><!-- end of table -->
-                        
+
                         {{ $categories->appends(request()->query())->links() }}
-                        
+
                     @else
-                        
+
                         <h2>@lang('site.no_data_found')</h2>
-                        
+
                     @endif
 
                 </div><!-- end of box body -->

@@ -6,15 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use \Dimsav\Translatable\Translatable;
+
 
     protected $guarded = [];
-    public $translatedAttributes = ['name'];
+    protected $fillable = ['nameA','nameV','month','year'];
 
-    public function products()
+    public function months() {
+        return $this->hasMany(month::class);
+    }
+
+    public function years() {
+        return $this->hasMany(Years::class);
+    }
+
+    public function monthsC()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(month::class);
+    }
 
-    }//end of products
 
 }//end of model

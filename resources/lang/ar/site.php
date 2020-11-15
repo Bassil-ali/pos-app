@@ -14,6 +14,7 @@ return [
     'show' => 'عرض',
     'loading' => 'جاري التحميل',
     'print' => 'طبع',
+    'totalname' =>'اسم المستخدم',
 
     'confirm_delete' => 'تاكيد الحذف',
     'yes' => 'نعم',
@@ -23,7 +24,7 @@ return [
     'remember_me' => 'تذكرني',
     'password' => 'كلمه المرور',
     'password_confirmation' => 'تاكيد كلمه المرور',
-
+    'month_id' => 'الشهر',
     'added_successfully' => 'تم اضافه البيانات بنجاح',
     'updated_successfully' => 'تم تعديل البيانات بنجاح',
     'deleted_successfully' => 'تم حذف البيانات بنجاح',
@@ -40,7 +41,7 @@ return [
     'add_order' => 'اضف طلب',
     'edit_order' => 'تعديل طلب',
 
-    'users' => 'المشرفين',
+    'users' => 'الوارثين',
     'first_name' => 'الاسم الاول',
     'last_name' => 'الاسم الاخير',
     'email' => 'البريد الاكتروني',
@@ -49,7 +50,7 @@ return [
 
     'permissions' => 'الصلاحيات',
 
-    'categories' => 'الاقسام',
+    'categories' => 'الايرادات',
     'all_categories' => 'كل الاقسام',
     'name' => 'الاسم',
     'description' => 'الوصف',
@@ -59,7 +60,7 @@ return [
     'show_products' => 'عرض المنتجات',
     'created_at' => 'تم اضافته',
 
-    'products' => 'المنتجات',
+    'products' => 'المنصرفات',
     'product' => 'المنتج',
     'quantity' => 'الكميه',
     'total' => 'المجموع',

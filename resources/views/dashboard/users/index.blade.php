@@ -6,11 +6,11 @@
 
         <section class="content-header">
 
-            <h1>@lang('site.users')</h1>
+            <h1>المستفيدين</h1>
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.users')</li>
+                <li class="active">المستفيدين</li>
             </ol>
         </section>
 
@@ -32,7 +32,7 @@
 
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
-                                @if (auth()->user()->hasPermission('create_users'))
+                                @if (auth()->user()->id ==1)
                                     <a href="{{ route('dashboard.users.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
                                 @else
                                     <a href="#" class="btn btn-primary disabled"><i class="fa fa-plus"></i> @lang('site.add')</a>
@@ -44,7 +44,7 @@
 
                 </div><!-- end of box header -->
 
-                <div class="box-body">
+                <div class="box-body table-responsive">
 
                     @if ($users->count() > 0)
 
@@ -53,29 +53,33 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>@lang('site.first_name')</th>
-                                <th>@lang('site.last_name')</th>
-                                <th>@lang('site.email')</th>
+                                <th>اسم المستخدم</th>
                                 <th>@lang('site.image')</th>
-                                <th>@lang('site.action')</th>
+                                <th>الايميل</th>
+                                <th>رقم الهاتف</th>
+                                <th>رقم الحساب البنكي</th>
+
                             </tr>
                             </thead>
-                            
+
                             <tbody>
                             @foreach ($users as $index=>$user)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $user->first_name }}</td>
-                                    <td>{{ $user->last_name }}</td>
+
+                                    <td>{{ $user->totalname }}</td>
+                                    <td><img src="{{ $user->image_path }}" style="width: 50px;" class="img-thumbnail" alt=""></td>
                                     <td>{{ $user->email }}</td>
-                                    <td><img src="{{ $user->image_path }}" style="width: 100px;" class="img-thumbnail" alt=""></td>
+                                    <td>{{ $user->phone }}</td>
+                                    <td>{{ $user->account }}</td>
+
                                     <td>
-                                        @if (auth()->user()->hasPermission('update_users'))
+                                        @if (auth()->user()->id ==1)
                                             <a href="{{ route('dashboard.users.edit', $user->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
                                         @else
                                             <a href="#" class="btn btn-info btn-sm disabled"><i class="fa fa-edit"></i> @lang('site.edit')</a>
                                         @endif
-                                        @if (auth()->user()->hasPermission('delete_users'))
+                                        @if (auth()->user()->id ==1)
                                             <form action="{{ route('dashboard.users.destroy', $user->id) }}" method="post" style="display: inline-block">
                                                 {{ csrf_field() }}
                                                 {{ method_field('delete') }}
@@ -84,20 +88,34 @@
                                         @else
                                             <button class="btn btn-danger btn-sm disabled"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         @endif
+                                        @if (auth()->user()->id ==1)
+                                        @if ($user->admin ==1)
+                                                <a type="button" class="btn btn-warning" href="{{route('users.not.admin',['id' => $user->id])}}">
+                                                        delete admin
+                                                </a>
+                                                @else
+
+                                                    <a type="button" class="btn btn-warning" href="{{route('users.admin',['id' => $user->id])}}">
+                                                            make admin
+                                                    </a>
+                                                @endif
+                                    @else
+                                        <a href="#" class="btn btn-info btn-sm disabled"><i class="fa fa-edit"></i></a>
+                                    @endif
                                     </td>
                                 </tr>
-                            
+
                             @endforeach
                             </tbody>
 
                         </table><!-- end of table -->
-                        
+
                         {{ $users->appends(request()->query())->links() }}
-                        
+
                     @else
-                        
+
                         <h2>@lang('site.no_data_found')</h2>
-                        
+
                     @endif
 
                 </div><!-- end of box body -->

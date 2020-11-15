@@ -13,7 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Year;
 
-class OrderController extends Controller
+class OrderController2 extends Controller
 {
 
 
@@ -61,7 +61,7 @@ class OrderController extends Controller
 
             $users = User::whereRoleIs('admin')->get();
 
-            return view('dashboard.index',compact('categories','years','months','products','users'));
+            return view('dashboard.index2',compact('categories','years','months','products','users'));
         }
     //end of index
 

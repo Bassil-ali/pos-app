@@ -33,19 +33,25 @@
                         {{ method_field('post') }}
 
                         <div class="form-group">
-                            <label>@lang('site.first_name')</label>
-                            <input type="text" name="first_name" class="form-control" value="{{ old('first_name') }}">
-                        </div>
 
                         <div class="form-group">
-                            <label>@lang('site.last_name')</label>
-                            <input type="text" name="last_name" class="form-control" value="{{ old('last_name') }}">
+                            <label>اسم المستخدم:</label>
+                            <input type="text" name="totalname" class="form-control" value="">
+
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الهاتف:</label>
+                            <input type="text" name="phone" class="form-control" value="{{ '09932332332' }}">
+                        </div>
+                        <div class="form-group">
+                            <label>الايميل:</label>
+                            <input type="email" name="email" class="form-control" value="{{ 'example@gmail.com' }}">
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الحساب البنكي:</label>
+                            <input type="text" name="account" class="form-control" value="{{ '0002-3034-33' }}">
                         </div>
 
-                        <div class="form-group">
-                            <label>@lang('site.email')</label>
-                            <input type="email" name="email" class="form-control" value="{{ old('email') }}">
-                        </div>
 
                         <div class="form-group">
                             <label>@lang('site.image')</label>
@@ -56,10 +62,14 @@
                             <img src="{{ asset('uploads/user_images/default.png') }}"  style="width: 100px" class="img-thumbnail image-preview" alt="">
                         </div>
 
+
                         <div class="form-group">
                             <label>@lang('site.password')</label>
                             <input type="password" name="password" class="form-control">
                         </div>
+
+
+
 
                         <div class="form-group">
                             <label>@lang('site.password_confirmation')</label>
@@ -67,39 +77,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label>@lang('site.permissions')</label>
-                            <div class="nav-tabs-custom">
+                                <label>نسبه الوارث :ادخل رقم عشري</label>
+                                <input type="text" name="neth" class="form-control">
+                            </div>
 
-                                @php
-                                    $models = ['users', 'categories', 'products', 'clients', 'orders'];
-                                    $maps = ['create', 'read', 'update', 'delete'];
-                                @endphp
 
-                                <ul class="nav nav-tabs">
-                                    @foreach ($models as $index=>$model)
-                                        <li class="{{ $index == 0 ? 'active' : '' }}"><a href="#{{ $model }}" data-toggle="tab">@lang('site.' . $model)</a></li>
-                                    @endforeach
-                                </ul>
 
-                                <div class="tab-content">
-
-                                    @foreach ($models as $index=>$model)
-
-                                        <div class="tab-pane {{ $index == 0 ? 'active' : '' }}" id="{{ $model }}">
-
-                                            @foreach ($maps as $map)
-                                                <label><input type="checkbox" name="permissions[]" value="{{ $map . '_' . $model }}"> @lang('site.' . $map)</label>
-                                            @endforeach
-
-                                        </div>
-
-                                    @endforeach
-
-                                </div><!-- end of tab content -->
-                                
-                            </div><!-- end of nav tabs -->
-                            
-                        </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</button>

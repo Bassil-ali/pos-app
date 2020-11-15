@@ -25,9 +25,9 @@
 
                 <div class="box-body">
 
+                    @include('partials._errors')
 
-
-                    <form action="{{ route('dashboard.users.update', $user->id) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('dashboard.user.update2', auth()->user()->id) }}" method="post" enctype="multipart/form-data">
 
                         {{ csrf_field() }}
                         {{ method_field('put') }}
@@ -40,26 +40,16 @@
                         </div>
                         <div class="form-group">
                             <label>رقم الهاتف:</label>
-                            <input type="text" name="phone" class="form-control" value="">
+                            <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
                         </div>
                         <div class="form-group">
                             <label>الايميل:</label>
-                            <input type="email" name="email" class="form-control" value="">
+                            <input type="email" name="email" class="form-control" value="{{ $user->email }}">
                         </div>
                         <div class="form-group">
                             <label>رقم الحساب البنكي:</label>
-                            <input type="text" name="account" class="form-control" value="">
+                            <input type="text" name="account" class="form-control" value="{{ $user->account }}">
                         </div>
-                         @if(auth()->user()->id ==1)
-                         <div class="form-group">
-                            <label>نسبه الوارث :ادخل رقم عشري</label>
-                           <input type="text" name="neth" class="form-control" value="{{ $user->neth }}">
-                       </div>
-                         @else
-                         <p>تواصل معه الادمن لتعديل نسبه الورثه</p>
-                         @endif
-
-
 
 
                         <div class="form-group">
@@ -82,11 +72,6 @@
                             <label>@lang('site.password_confirmation')</label>
                             <input type="password" name="password_confirmation" class="form-control">
                         </div>
-
-
-
-
-
 
 
 

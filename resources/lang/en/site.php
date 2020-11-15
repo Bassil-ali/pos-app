@@ -14,13 +14,14 @@ return [
     'show' => 'show',
     'loading' => 'loading',
     'print' => 'print',
+    'month id' => 'الشهر',
 
     'confirm_delete' => 'confirm_delete',
     'yes' => 'yes',
     'no' => 'no',
 
     'login' => 'login',
-    'remember_me' =>'remember_me',
+    'remember_me' =>'remember me',
     'password' => 'password',
     'password_confirmation' =>'password_confirmation',
 
@@ -43,7 +44,7 @@ return [
     'users' => 'users',
     'first_name' => 'first_name',
     'last_name' => 'last_name',
-    'email' =>  'email',
+    'email' =>  'your name',
     'image' =>  'image',
     'action' => 'action',
 

@@ -4,11 +4,11 @@
 
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>@lang('site.categories')</h1>
+            <h1>الايرادات</h1>
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li><a href="{{ route('dashboard.categories.index') }}"> @lang('site.categories')</a></li>
+                <li><a href="{{ route('dashboard.categories.index') }}">الايرادات</a></li>
                 <li class="active">@lang('site.add')</li>
             </ol>
         </section>
@@ -29,16 +29,47 @@
                         {{ csrf_field() }}
                         {{ method_field('post') }}
 
-                        @foreach (config('translatable.locales') as $locale)
+
+
+
                             <div class="form-group">
-                                <label>@lang('site.' . $locale . '.name')</label>
-                                <input type="text" name="{{ $locale }}[name]" class="form-control" value="{{ old($locale . '.name') }}">
+                                <label>وصف الايراد :</label>
+                                <textarea type="text" name="nameA" class="form-control" value=""placeholder="الاسم"></textarea>
                             </div>
-                        @endforeach
+
+                            <div class="form-group">
+                                <label>قيمه الايراد :</label>
+                                <input type="text" name="nameV" class="form-control" value="" placeholder="القيمه">
+                            </div>
+                            <div class="form-group">
+
+                                <select name="month" class="form-control">
+                                    <option value="">اختر الشهر</option>
+                                    @foreach ($months as $month)
+                                        <option value="{{ $month->month }}" }}>{{ $month->month }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+
+                                    <select name="year" class="form-control">
+                                        <option value="">اختر السنه</option>
+                                        @foreach ($years as $year)
+                                            <option value="{{ $year->year }}" }}>{{ $year->year }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</button>
                         </div>
+
+                        <br>
+                        <br>
+
+
+
 
                     </form><!-- end of form -->
 
@@ -49,5 +80,8 @@
         </section><!-- end of content -->
 
     </div><!-- end of content wrapper -->
+</div>
+</div>
+        </div>
 
 @endsection

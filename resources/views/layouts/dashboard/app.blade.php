@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Blank Page</title>
+    <title>waritha</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     {{--<!-- Bootstrap 3.3.7 -->--}}
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('dashboard_files/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard_files/css/skin-blue.min.css') }}">
 
-    @if (app()->getLocale() == 'ar')
+
         <link rel="stylesheet" href="{{ asset('dashboard_files/css/font-awesome-rtl.min.css') }}">
         <link rel="stylesheet" href="{{ asset('dashboard_files/css/AdminLTE-rtl.min.css') }}">
         <link href="https://fonts.googleapis.com/css?family=Cairo:400,700" rel="stylesheet">
@@ -23,11 +23,7 @@
                 font-family: 'Cairo', sans-serif !important;
             }
         </style>
-    @else
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-        <link rel="stylesheet" href="{{ asset('dashboard_files/css/font-awesome.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('dashboard_files/css/AdminLTE.min.css') }}">
-    @endif
+
 
     <style>
         .mr-2{
@@ -89,11 +85,7 @@
     <header class="main-header">
 
         {{--<!-- Logo -->--}}
-        <a href="{{ asset('dashboard') }}/index2.html" class="logo">
-            {{--<!-- mini logo for sidebar mini 50x50 pixels -->--}}
-            <span class="logo-mini"><b>A</b>LT</span>
-            <span class="logo-lg"><b>Admin</b>LTE</span>
-        </a>
+
 
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
@@ -135,46 +127,32 @@
                     {{--<!-- Notifications: style can be found in dropdown.less -->--}}
 
                     {{--<!-- Tasks: style can be found in dropdown.less -->--}}
-                    <li class="dropdown tasks-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag-o"></i></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                {{--<!-- inner menu: contains the actual data -->--}}
-                                <ul class="menu">
-                                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                        <li>
-                                            <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                                {{ $properties['native'] }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+
 
                     {{--<!-- User Account: style can be found in dropdown.less -->--}}
                     <li class="dropdown user user-menu">
 
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ asset('dashboard_files/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span>
+                            <img src="{{ auth()->user()->image_path }}" class="user-image" alt="User Image">
+                            <span class="">البروفايل </span>
                         </a>
                         <ul class="dropdown-menu">
 
                             {{--<!-- User image -->--}}
                             <li class="user-header">
-                                <img src="{{ asset('dashboard_files/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                                <img src="{{ auth()->user()->image_path }}" class="img-circle" alt="User Image">
 
                                 <p>
-                                    {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+                                    {{ auth()->user()->totalname }}
 
                                 </p>
                             </li>
 
                             {{--<!-- Menu Footer-->--}}
                             <li class="user-footer">
+                                <a href="{{route('dashboard.users.edit',auth()->user()->id )}}" class="btn btn-default btn-flat">الملف الشخصي</a>
 
+               <br>
 
                                 <a href="{{ route('logout') }}" class="btn btn-default btn-flat" onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">@lang('site.logout')</a>
@@ -198,14 +176,6 @@
 
     @include('partials._session')
 
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 2.4.0
-        </div>
-        <strong>Copyright &copy; 2014-2016
-            <a href="https://adminlte.io">Bassil ali</a>.</strong> All rights
-        reserved.
-    </footer>
 
 </div><!-- end of wrapper -->
 

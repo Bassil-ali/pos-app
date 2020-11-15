@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Dashboard;
-
-use App\Category;
+use App\month;
+use App\Year;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,119 +14,73 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::all();
+
 
         $products = Product::when($request->search, function ($q) use ($request) {
 
-            return $q->whereTranslationLike('name', '%' . $request->search . '%');
+            return $q->where('nameS','like', '%' . $request->search . '%')
+            ->orwhere('valueS','like', '%' . $request->search . '%');
 
-        })->when($request->category_id, function ($q) use ($request) {
+        })->when($request->product_id, function ($q) use ($request) {
 
-            return $q->where('category_id', $request->category_id);
+            return $q->where('product_id', $request->product_id);
 
         })->latest()->paginate(5);
 
-        return view('dashboard.products.index', compact('categories', 'products'));
+        return view('dashboard.products.index', compact( 'products'));
 
     }//end of index
 
     public function create()
+
     {
-        $categories = Category::all();
-        return view('dashboard.products.create', compact('categories'));
+        $years = Year::get();
+        $months = Month::get();
+        return view('dashboard.products.create',compact('months','years'));
 
     }//end of create
 
     public function store(Request $request)
     {
-        $rules = [
-            'category_id' => 'required'
-        ];
 
-        foreach (config('translatable.locales') as $locale) {
 
-            $rules += [$locale . '.name' => 'required|unique:product_translations,name'];
-            $rules += [$locale . '.description' => 'required'];
+        $request->validate([
+            'nameS' => 'required',
+            'valueS' => 'required',
+            'month' => 'required',
+            'year' => 'required'
+
+
+
+           ]);
+
+           Product::create($request->all());
+           session()->flash('success', __('site.added_successfully'));
+           return redirect()->route('dashboard.products.index');
 
         }//end of  for each
 
-        $rules += [
-            'purchase_price' => 'required',
-            'sale_price' => 'required',
-            'stock' => 'required',
-        ];
-
-        $request->validate($rules);
-
-        $request_data = $request->all();
-
-        if ($request->image) {
-
-            Image::make($request->image)
-                ->resize(300, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                })
-                ->save(public_path('uploads/product_images/' . $request->image->hashName()));
-
-            $request_data['image'] = $request->image->hashName();
-
-        }//end of if
-
-        Product::create($request_data);
-        session()->flash('success', __('site.added_successfully'));
-        return redirect()->route('dashboard.products.index');
-
-    }//end of store
 
     public function edit(Product $product)
     {
-        $categories = Category::all();
-        return view('dashboard.products.edit', compact('categories', 'product'));
+        $years = Year::get();
+        $months = Month::get();
+        return view('dashboard.products.edit', compact('product','months','years'));
 
     }//end of edit
 
     public function update(Request $request, Product $product)
     {
-        $rules = [
-            'category_id' => 'required'
-        ];
 
-        foreach (config('translatable.locales') as $locale) {
+        $request->validate([
+            'nameS' => 'required',
+            'valueS' => 'required',
+            'month' => 'required',
+            'year' => 'required'
 
-            $rules += [$locale . '.name' => ['required', Rule::unique('product_translations', 'name')->ignore($product->id, 'product_id')]];
-            $rules += [$locale . '.description' => 'required'];
 
-        }//end of  for each
-
-        $rules += [
-            'purchase_price' => 'required',
-            'sale_price' => 'required',
-            'stock' => 'required',
-        ];
-
-        $request->validate($rules);
-
-        $request_data = $request->all();
-
-        if ($request->image) {
-
-            if ($product->image != 'default.png') {
-
-                Storage::disk('public_uploads')->delete('/product_images/' . $product->image);
-
-            }//end of if
-
-            Image::make($request->image)
-                ->resize(300, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                })
-                ->save(public_path('uploads/product_images/' . $request->image->hashName()));
-
-            $request_data['image'] = $request->image->hashName();
-
-        }//end of if
-
-        $product->update($request_data);
+           ]);
+        $product->update($request->all());
         session()->flash('success', __('site.updated_successfully'));
         return redirect()->route('dashboard.products.index');
 
@@ -134,11 +88,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->image != 'default.png') {
 
-            Storage::disk('public_uploads')->delete('/product_images/' . $product->image);
-
-        }//end of if
 
         $product->delete();
         session()->flash('success', __('site.deleted_successfully'));

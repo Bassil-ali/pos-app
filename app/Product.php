@@ -6,38 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use \Dimsav\Translatable\Translatable;
-
-    protected $guarded = ['id'];
-
-    public $translatedAttributes = ['name', 'description'];
-    protected $appends = ['image_path', 'profit_percent'];
 
 
-    public function getImagePathAttribute()
+    protected $guarded = [];
+    protected $fillable = ['nameS','valueS','month','year'];
+
+    public function months() {
+        return $this->hasMany(month::class);
+
+    }
+    public function years() {
+        return $this->hasMany(Years::class);
+    }
+
+    public function monthsP()
     {
-        return asset('uploads/product_images/' . $this->image);
+        return $this->belongsToMany(month::class);
+    }
 
-    }//end of image path attribute
-
-    public function getProfitPercentAttribute()
-    {
-        $profit = $this->sale_price - $this->purchase_price;
-        $profit_percent = $profit * 100 / $this->purchase_price;
-        return number_format($profit_percent, 2);
-
-    }//end of get profit attribute
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-
-    }//end fo category
-
-    public function orders()
-    {
-        return $this->belongsToMany(Order::class, 'product_order');
-
-    }//end of orders
 
 }//end of model

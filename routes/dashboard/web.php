@@ -8,6 +8,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
             Route::get('/', 'WelcomeController@index')->name('welcome');
 
+            Route::get('/index', 'OrderController@index')->name('index');
+            Route::get('/index2', 'OrderController2@index')->name('index2');
+
+
+           // Route::get('/index/{month_id}/', 'OrderController@show')->name('index.show');
+
             //category routes
             Route::resource('categories', 'CategoryController')->except(['show']);
 
@@ -19,14 +25,23 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::resource('clients.orders', 'Client\OrderController')->except(['show']);
 
             //order routes
-            Route::resource('orders', 'OrderController');
-            Route::get('/orders/{order}/products', 'OrderController@products')->name('orders.products');
+            Route::resource('orders', 'OrderController')->except(['show']);
 
 
             //user routes
             Route::resource('users', 'UserController')->except(['show']);
 
+
+
+
+
+
+
+
         });//end of dashboard routes
+        Route::get('/users/admin/{id}', 'UserController@admin')->name('users.admin'); //->middleware('admin');
+        Route::get('/users/notadmin/{id}', 'UserController@notAdmin')->name('users.not.admin');
+
     });
 
 

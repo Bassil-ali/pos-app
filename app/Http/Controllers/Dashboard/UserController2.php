@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 
 
-class UserController extends Controller
+class UserController2 extends Controller
 {
     public function __construct()
     {
         //create read update delete
+        $this->middleware(['permission:read_users'])->only('index');
+        $this->middleware(['permission:create_users'])->only('create');
+        $this->middleware(['permission:update_users'])->only('edit');
+        $this->middleware(['permission:delete_users'])->only('destroy');
 
     }//end of constructor
 
@@ -32,7 +36,7 @@ class UserController extends Controller
         })->latest()->paginate(5);
         $user = User::get();
 
-        return view('dashboard.users.index', compact('users'));
+
         return view('layouts.dashboard.app.', compact('user'));
 
     }//end of index
@@ -50,20 +54,16 @@ class UserController extends Controller
         $request->validate([
             'totalname' => 'required|unique:users',
             'image' => 'image',
-            'neth' => 'required',
-            'phone' => 'required' ,
+             'neth' => 'required',
+             'phone' => 'required' ,
             'email' => 'required' ,
-            'account' => 'required',
-
+            'account' => 'required' ,
             'password' => 'required|confirmed',
-
+            'permissions' => 'required|min:1'
         ]);
-        
 
-        $request_data = $request->except(['password', 'password_confirmation', 'image']);
+        $request_data = $request->except(['password', 'password_confirmation', 'permissions', 'image']);
         $request_data['password'] = bcrypt($request->password);
-        $user = new User();
-        $user->password2 = 'password';
 
         if ($request->image) {
 
@@ -79,7 +79,7 @@ class UserController extends Controller
 
         $user = User::create($request_data);
         $user->attachRole('admin');
-
+        $user->syncPermissions($request->permissions);
 
         session()->flash('success', __('site.added_successfully'));
         return redirect()->route('dashboard.users.index');
@@ -87,11 +87,14 @@ class UserController extends Controller
     }//end of store
 
     public
-    function edit(User $user)
+    function edit($id)
     {
-        return view('dashboard.users.edit', compact('user'));
+        $users =User::find($id);
+
+        return view('user.edit2', compact('users'));
 
     }//end of user
+
 
     public
     function update(Request $request, User $user)
@@ -99,39 +102,20 @@ class UserController extends Controller
 
 
 
-        
+        $request->validate([
 
-        
-        if ($request->password == ""||$request->password == null){
-            $request_data = $request->except([ 'image','password']);
-            $request->validate([
+            'totalname' => ['required', Rule::unique('users')->ignore($user->id),],
+            'image' => 'image',
 
-                'totalname' => 'required',
-                'image' => 'image',
-                'neth' => '',
-                'phone' => 'required' ,
-                'email' => 'required' ,
-                'account' => 'required' ,
-    
-    
-            ]);
-        } else {
-            $request_data = $request->except([ 'image']);
-            $request->validate([
+            'phone' => 'required' ,
+            'email' => 'required' ,
+            'account' => 'required' ,
+            'password' => 'required|confirmed',
 
-                'totalname' => 'required',
-                'image' => 'image',
-                'neth' => '',
-                'phone' => 'required' ,
-                'email' => 'required' ,
-                'account' => 'required' ,
-                'password' => 'required|confirmed',
-    
-    
-            ]);
 
-        $request_data['password'] = bcrypt($request->password);
-        }
+        ]);
+
+        $request_data = $request->except(['permissions', 'image']);
 
         if ($request->image) {
 
@@ -154,9 +138,10 @@ class UserController extends Controller
 
         $user->update($request_data);
 
+        $user->syncPermissions($request->permissions);
 
         session()->flash('success', __('site.updated_successfully'));
-        return redirect()->route('dashboard.welcome');
+        return redirect()->route('dashboard.users.index');
 
     }//end of update
 
@@ -174,22 +159,5 @@ class UserController extends Controller
         return redirect()->route('dashboard.users.index');
 
     }//end of destroy
-
-    public function admin($id)
-    {
-        $user = User::find($id);
-        $user->admin = 1;
-        $user->save();
-        return redirect()->route('dashboard.users.index');
-    }
-
-    public function notAdmin($id)
-    {
-        $user = User::find($id);
-        $user->admin = 0;
-        $user->save();
-        return redirect()->route('dashboard.users.index');
-    }
-
 
 }//end of controller
