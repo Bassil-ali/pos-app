@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\User;
-use Faker\Provider\Image;
+//use Faker\Provider\Image;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Intervention\Image\ImageManagerStatic as Image;
 
 
 class UserController extends Controller
